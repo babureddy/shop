@@ -80,15 +80,14 @@ def show_transactions(id):
 @app.route('/transaction/<id>/', methods=['POST'])
 def add_transaction(id):
     data = request.form
+    print(data)
     cart=[]
     for d in data:
         if 'qty' in d:
             itemid=d[3:]
             if int(request.form[d]) == 0: continue
-            # print(d)
             cart += [(itemid,request.form[d], request.form['discount'+str(itemid)])]
-    # print(cart)
-    trans.add(id,request.form['unit_price'],cart,request.form['tax'],request.form['misc'])
+    trans.add(id,data['unit_price'],cart,data['tax'],data['misc'],data['grand_total'])
     return redirect('/customers/')
 
 @app.route('/bill/', methods=['POST'])

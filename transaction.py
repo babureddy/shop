@@ -7,13 +7,16 @@ class Transaction:
         self.cur = self.connection.cursor()
         self.dt = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
-    def add(self, customer_id, unit_price, cart, tax, misc):
-        sql = "insert into trans (customer_id, unit_price, tax, misc, create_date) values (?,?,?,?,?)"
-        tx_id = self.cur.execute(sql,(customer_id, unit_price, tax, misc,self.dt))
+    def add(self, customer_id, unit_price, cart, tax, misc,final_price):
+        sql = "insert into trans (customer_id, unit_price, tax, misc, final_price,create_date) values (?,?,?,?,?,?)"
+        tx_id = self.cur.execute(sql,(customer_id, unit_price, tax, misc,final_price,self.dt))
         for item in cart:
             sql = "insert into transaction_items (tx_id, item_id, qty, discount) values (?,?,?,?)"
-            print(sql,item)
             response = self.cur.execute(sql,(tx_id.lastrowid,item[0], item[1],item[2]))
+            
+            sql = "update item set stock=stock-? where id = ?"
+            response = self.cur.execute(sql,(item[1],item[0],))
+
         self.connection.commit()
         return response.lastrowid
         
@@ -39,7 +42,7 @@ class Transaction:
                 items += [{'id':i[0],'tx_id':i[1],'item_id':i[2],'qty':i[3],
                     'discount':i[4],'item_name':i[6],'item_desc':i[7],'weight':i[8] }]
             transactions += [{'id':row[0],'customer_id':row[1],'unit_price':row[2],
-                'tax':row[3],'misc':row[4],'created_date':row[5],'items':items,'payments':payments}]
+                'tax':row[3],'misc':row[4],'created_date':row[5],'final_price':row[6],'items':items,'payments':payments}]
             
         return {'transactions':transactions}
 
