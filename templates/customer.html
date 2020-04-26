@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Customers</title>
+</head>
+
+<body>
+    <h2><a href='/'>Home</a></h2>
+    <h2>Customers</h2>
+        <div>
+            <h3>{{ message }}</h3>
+        </div>
+        <div>
+            <form id='customer_edit' method="POST" action="/customer/">
+                <input type="text"  name="customer_name" placeholder="Name" > 
+                <input  type="number" name="customer_mob1" placeholder="Mobile 1">
+                <input  type="number" name="customer_mob2" placeholder="Mobile 2"><br><br>
+                <input  type="text" name="customer_address" placeholder="Address">
+                <input  type="text" name="customer_city" placeholder="City">
+                <input  type="text" name="customer_aadhar" placeholder="Aadhar">
+                <input  type="text" name="customer_photo" placeholder="Photo">
+                <input  type="submit" value="Add" id="customer_save"  ><br><br>
+            </form>
+        </div>
+            <div>
+        <table border="1">
+            <th>ID</th>
+            <th>Name</th>
+            <th>Mob1</th>
+            <th>Mob2</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Aadhar</th>
+            <th>Photo</th>
+            {% for c in customers %}
+            <tr>
+                <td><a href='/customers/{{c[0]}}/' >{{c[0]}}</a></td>
+                <td>{{c[1]}}</td>
+                <td>{{c[2]}}</td>
+                <td>{{c[3]}}</td>
+                <td>{{c[4]}}</td>
+                <td>{{c[5]}}</td>
+                <td>{{c[6]}}</td>
+                <td>{{c[7]}}</td>
+                <td><a href='/transactions/{{c[0]}}/'>Purchase</a></td>
+                <td><a href='/showtransactions/{{c[0]}}/'>Show Purchase</a></td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    </div>
+
+</body>
+
+</html>

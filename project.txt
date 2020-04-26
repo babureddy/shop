@@ -1,0 +1,14 @@
+Requirement
+
+This is a simple web application. This application will help retail stores to maintain billing and payment tracking.  
+1. In the first phase this application takes in customer details and the items purchased by the customer.
+2. Payments can be made by cheque, cash or wallets or net banking and this needs to be updated manually.
+3. One order can be paid in multiple payments or transactions. This can be tracked by order number and transaction number
+4. In the next phase all edits to the customer details must be collected for auditing purposes.
+5. There are three web pages in this application initially.
+a. Customer details page - name, address, primary and alternate mobile nos , aadhar card picture, customer photo
+b. Item purchase details - date of purchase, item code, item name, item description, item quantity, item unit price, item final price, discount, GST and final value. Payments screen. 
+c. Search page - This page will allow search by name, phone number, item purchased and date
+
+Technologies - python, flask, sqlite3, html5, css3
+Duration - one week

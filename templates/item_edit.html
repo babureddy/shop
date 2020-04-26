@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Items</title>
+</head>
+
+<body>
+    <h2><a href='/'>Home</a></h2>
+    <h3>Item</h3>
+        <div>
+            <h2>{{ message }}</h2>
+        </div>
+<div>
+    {% if items %}
+    <form id='item_edit' method="POST" action="/item/{{items[0][0]}}/">
+        <label>ID:{{items[0][0]}}</label><br>
+        <input type="hidden" value="{{items[0][0]}}" name="item_id" > 
+        Name: <input type="text" value="{{items[0][1]}}" name="item_name" > <BR>
+        Desc: <input  type="text" value="{{items[0][2]}}" name="item_desc" ><BR>
+        Weight(gms): <input  type="text" value="{{items[0][3]}}" name="item_weight" ><BR>
+        Photo: <input  type="text" value="{{items[0][4]}}" name="item_photo" ><BR>
+        <input  type="submit" value="Save" id="item_save"  >
+    </form>
+    {% endif %}
+</div>
+</body>
+
+</html>

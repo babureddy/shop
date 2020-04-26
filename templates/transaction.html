@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Transactions</title>
+</head>
+
+<body>
+    <h2><a href='/'>Home</a></h2>
+        <div>
+            <h3>{{ message }}</h3>
+        </div>
+        <h2>Customer</h2>
+        Customer ID: <strong>{{customer[0][0]}}</strong><br>
+        Name: <strong>{{customer[0][1]}}</strong><br>
+        Phone No:<strong>{{customer[0][2]}}</strong><br><br>
+        {% for trans in transactions['transactions'] %}
+        <h2>Transaction {{trans['id']}}</h2>
+        Unit Price Per Gram :<strong>{{trans['unit_price']}}</strong><br>
+        Tax % :<Strong>{{trans['tax']}}</Strong> <br>
+        Misc Charges:<Strong> {{trans['misc']}}</Strong><br>
+        Date :<Strong> {{trans['created_date']}}</Strong><br>
+        <table id="data_table" style="width:1000px" border="3">
+            <th>Item ID</th>
+            <th>Name</th>
+            <th>Qty</th>
+            <th>Discount (%)</th>
+            <th>Weight in gms</th>
+
+            {% for c in trans['items'] %}
+            <tr>
+                <td>{{c['id']}}</td>
+                <td>{{c['item_name']}}</td>
+                <td>{{c['qty']}}</td>
+                <td>{{c['discount']}}</td>
+                <td>{{c['weight']}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <h2>Payments (<a href='/newpayment/{{trans['id']}}/{{customer[0][0]}}/'>+</a>)</h2>
+        <table id="data_table" style="width:1000px" border="3">
+            <th>ID</th>
+            <th>Payment Method</th>
+            <th>Amount</th>
+            <th>Details</th>
+            <th>Date</th>
+
+            {% for c in trans['payments'] %}
+            <tr>
+                <td>{{c['id']}}</td>
+                <td>{{c['payment_method']}}</td>
+                <td>{{c['amount']}}</td>
+                <td>{{c['payment_details']}}</td>
+                <td>{{c['payment_date']}}</td>
+            </tr>
+            {% endfor %}
+        </table><br>
+        {% endfor %}
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Payments</title>
+</head>
+
+<body>
+    <h2><a href='/'>Home</a></h2>
+    <h3>Payment</h3>
+        <div>
+            <h2>{{ message }}</h2>
+        </div>
+<div>
+    <form id='payment_edit' method="POST" action="/payment/{{payment[0][0]}}/">
+        <label>ID:{{payment[0][0]}}</label><br>
+        Bill ID: <input  type="text" disabled value="{{payment[0][1]}}" name="Bill ID" ><BR>
+        Payment Type: <input  type="text" value="{{payment[0][2]}}" name="payment_type" ><BR>
+        Amount: <input  type="text" value="{{payment[0][3]}}" name="amount" ><BR>
+        Payment Details: <input  type="text" value="{{payment[0][4]}}" name="payment_details" ><BR>
+        <input  type="submit" value="Save" id="payment_save"  >
+    </form>
+</div>
+</body>
+
+</html>

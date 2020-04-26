@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Payments</title>
+</head>
+
+<body>
+    <h2><a href='/'>Home</a></h2>
+    <h2>Payments</h2>
+        <div>
+            <h3>{{ message }}</h3>
+        </div>
+        <div>
+            <form id='payment_add' method="POST" action="/payment/{{tx_id}}/{{customer_id}}/">
+                <input type="number"  id="customer_id"  name="customer_id" value="{{customer_id}}" disabled> 
+                <input type="number"  id="tx_id"  name="tx_id" value="{{tx_id}}" disabled> 
+                <input  type="text" name="payment_method" id="payment_method" placeholder="Payment Method">
+                <!-- <select id="payment_method">
+                    <option value="Cash">Cash</option>
+                    <option value="Cheque">Cheque</option>
+                    <option value="NEFT">NEFT</option>
+                    <option value="RTGS">RTGS</option>
+                    <option value="Wallet">Wallet</option>
+                </select> -->
+                
+                <input  type="number" name="amount" id="amount" placeholder="Amount">
+                <input  type="text" name="payment_details" id="payment_details" placeholder="Payment Details">
+                <input  type="submit" value="Add" id="payment_save"  ><br><br>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
