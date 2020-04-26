@@ -85,7 +85,9 @@ def add_transaction(id):
         if 'qty' in d:
             itemid=d[3:]
             if int(request.form[d]) == 0: continue
+            # print(d)
             cart += [(itemid,request.form[d], request.form['discount'+str(itemid)])]
+    # print(cart)
     trans.add(id,request.form['unit_price'],cart,request.form['tax'],request.form['misc'])
     return redirect('/customers/')
 
@@ -109,7 +111,7 @@ def bills(k='id',v='desc'):
 @app.route('/items/')
 @app.route('/items/<k>/<v>/')
 def get_items(k='id',v='desc'):
-    result = item.items(k,v)
+    result = item.all_items(k,v)
     return render_template("item.html", items = result)  
 @app.route('/item/', methods=['POST'])
 def add_item():
@@ -117,7 +119,8 @@ def add_item():
     desc = request.form.get('item_desc')
     weight = request.form.get('item_weight')
     photo = request.form.get('item_photo')
-    id = item.add(name.title(), desc,weight,photo)
+    stock = request.form.get('item_stock')
+    id = item.add(name.title(), desc,weight,photo,stock)
     return redirect('/items/')
 @app.route('/items/<id>/')
 def get_item(id):
@@ -129,7 +132,8 @@ def update_item(id):
     desc = request.form.get('item_desc')
     weight = request.form.get('item_weight')
     photo = request.form.get('item_photo')
-    item.update(id,name.title(), desc,weight,photo)
+    stock = request.form.get('item_stock')
+    item.update(id,name.title(), desc,weight,photo,stock)
     return redirect('/items/')
 @app.route('/payments/<customer_id>')
 def get_payments(transaction_id):

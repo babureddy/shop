@@ -1,0 +1,8 @@
+Features
+1. Add Login Page for security
+2. Add Search facility for customer, item, transactions and payments
+3. Add dashboard to home page showing sales for each month, projected targets, pending payments
+4. Add Sort facility for all columns in tables
+5. Add admin page to make any corrections to fix incorrect data
+6. Add payment methods drop down (Cash, Cheque, etc)
+7. Add Auditing facility to keep track of inserts and updates made to the system

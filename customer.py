@@ -5,11 +5,12 @@ class Customer:
     def __init__(self):
         self.connection = sqlite3.connect('accounts.db', check_same_thread=False)
         self.cur = self.connection.cursor()
+        self.dt = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
     def add(self, name, mob1, mob2, address, city, aadhar_card, photo):
         sql = "insert into customer (name,mob1,mob2,address,city,aadhar_card, photo,created_date) \
                 values (?,?,?,?,?,?,?,?)"
-        response = self.cur.execute(sql,(name, mob1, mob2, address, city, aadhar_card, photo,datetime.datetime.now()))
+        response = self.cur.execute(sql,(name, mob1, mob2, address, city, aadhar_card, photo,self.dt))
         self.connection.commit()
         return response.lastrowid
         
