@@ -15,7 +15,7 @@
         <strong>{{customer[0][1]}}</strong>
 
         <form id="transaction_form" method="POST" action="/transaction/{{customer[0][0]}}/">
-        Unit Price Per Gram :<input type="number" id="unit_price" name="unit_price" value="4000" ><br><br>
+        Unit Price Per Gram :<input type="text" id="unit_price" name="unit_price" value="{{todays_gold_price}}" ><br><br>
         <div>
 
         <table id="data_table" style="width:1000px" border="3">

@@ -1,10 +1,11 @@
 from flask import request, redirect, Flask, flash, render_template, send_from_directory, url_for, jsonify #pip install flask
 from werkzeug.utils import secure_filename
-import os,datetime
+import os,datetime,math
 from customer import Customer 
 from item import Item 
 from payment import Payment
 from transaction import Transaction
+from goldprice import getTodaysGoldPrice
 trans = Transaction()
 payment = Payment()
 item = Item()
@@ -70,25 +71,13 @@ def customers(k='id',v='desc'):
     result = customer.customers(k,v)
     return render_template("customer.html", customers = result)  
 
-@app.route('/bills/<id>/')
-def get_bill(id):
-    result = bill.get(id)
-    return render_template("bill_edit.html", bills = result)  
-@app.route('/bill/<id>/', methods=['POST'])
-def update_bill(id):
-    customer_id = request.form.get('customer_id')
-    item_id = request.form.get('item_id')
-    unit_price = request.form.get('unit_price')
-    weight = request.form.get('item_weight')
-    discount = request.form.get('discount')
-    total_price = request.form.get('total_price')
-    bill.update(id,customer_id,item_id,weight,unit_price,discount,total_price)
-    return redirect('/bills')
 @app.route('/transactions/<id>/')
 def transactions(id):
     c = customer.get(id)
     items = item.items()
-    return render_template("transactions.html",customer=c,items=items)  
+    todays_gold_price=getTodaysGoldPrice()
+    # print(todays_gold_price)
+    return render_template("transactions.html",customer=c,items=items, todays_gold_price=todays_gold_price)  
 @app.route('/showtransactions/<id>/')
 def show_transactions(id):
     c = customer.get(id)
