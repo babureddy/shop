@@ -12,14 +12,15 @@
             <h3>{{ message }}</h3>
         </div>
         <div>
-            <form id='customer_edit' method="POST" action="/customer/">
+            <form id='customer_edit' method="POST"  enctype="multipart/form-data"  action="/customer/">
                 <input type="text"  name="customer_name" placeholder="Name" > 
                 <input  type="number" name="customer_mob1" placeholder="Mobile 1">
                 <input  type="number" name="customer_mob2" placeholder="Mobile 2"><br><br>
                 <input  type="text" name="customer_address" placeholder="Address">
                 <input  type="text" name="customer_city" placeholder="City">
                 <input  type="text" name="customer_aadhar" placeholder="Aadhar">
-                <input  type="text" name="customer_photo" placeholder="Photo">
+                <!-- <input  type="text" name="customer_photo" placeholder="Photo"> -->
+                <input  type="file" name="file">
                 <input  type="submit" value="Add" id="customer_save"  ><br><br>
             </form>
         </div>
@@ -42,7 +43,7 @@
                 <td>{{c[4]}}</td>
                 <td>{{c[5]}}</td>
                 <td>{{c[6]}}</td>
-                <td>{{c[7]}}</td>
+                <td><img src="{{c[7]}}" width="400" height="300"></td>
                 <td><a href='/transactions/{{c[0]}}/'>Purchase</a></td>
                 <td><a href='/showtransactions/{{c[0]}}/'>Show Purchase</a></td>
 

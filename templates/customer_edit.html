@@ -12,7 +12,7 @@
             <h2>{{ message }}</h2>
         </div>
 <div>
-    <form id='customer_edit' method="POST" action="/customer/{{customers[0][0]}}/">
+    <form id='customer_edit' method="POST"  enctype="multipart/form-data"  action="/customer/{{customers[0][0]}}/">
         <label>ID:{{customers[0][0]}}</label><br>
         <input type="hidden" value="{{customers[0][0]}}" name="customer_id" > 
             Name: <input type="text" value="{{customers[0][1]}}" name="customer_name" > <BR>
@@ -22,6 +22,7 @@
         City: <input  type="text" value="{{customers[0][5]}}" name="customer_city" ><BR>
         Aadhar: <input  type="text" value="{{customers[0][6]}}" name="customer_aadhar" ><BR>
         Photo: <input  type="text" value="{{customers[0][7]}}" name="customer_photo" ><br>
+        <input  type="file" name="file">
         <input  type="submit" value="Save" id="customer_save"  >
     </form>
 </div>

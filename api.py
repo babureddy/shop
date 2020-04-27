@@ -1,6 +1,6 @@
 from flask import request, redirect, Flask, flash, render_template, send_from_directory, url_for, jsonify #pip install flask
 from werkzeug.utils import secure_filename
-import os
+import os,datetime
 from customer import Customer 
 from bill import Bill 
 from item import Item 
@@ -12,7 +12,7 @@ bill = Bill()
 item = Item()
 app = Flask(__name__)
 customer = Customer()
-UPLOAD_FOLDER = 'C:\\Users\\babur\\Google Drive\\tutorial\\python\\shop\\uploads'
+UPLOAD_FOLDER = os.curdir+'\\uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -33,7 +33,12 @@ def add_customer():
     city = request.form.get('customer_city')
     aadhar_card = request.form.get('customer_aadhar')
     photo = request.form.get('customer_photo')
-    print(id,name,mob1,mob2,address,city,aadhar_card,photo)
+    file = request.files['file']
+    if file:
+        filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S')+file.filename
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        photo = '/uploads/'+filename
+
     customer.add(name.title(), mob1, mob2, address, city, aadhar_card, photo)
     return redirect('/customers/')
 
@@ -47,6 +52,11 @@ def update_customer(id):
     city = request.form.get('customer_city')
     aadhar_card = request.form.get('customer_aadhar')
     photo = request.form.get('customer_photo')
+    file = request.files['file']
+    if file:
+        filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S')+file.filename
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        photo = '/uploads/'+filename
     customer.update(id,name.title(), mob1, mob2, address, city, aadhar_card, photo)
     return redirect('/customers/')
 
@@ -131,7 +141,7 @@ def add_item():
     stock = request.form.get('item_stock')
     file = request.files['file']
     if file:
-        filename = file.filename
+        filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S')+file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         photo = '/uploads/'+filename
     id = item.add(name.title(), desc,weight,photo,stock)
@@ -149,7 +159,7 @@ def update_item(id):
     stock = request.form.get('item_stock')
     file = request.files['file']
     if file:
-        filename = file.filename
+        filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S')+file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         photo = '/uploads/'+filename
     item.update(id,name.title(), desc,weight,photo,stock)
