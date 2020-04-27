@@ -2,13 +2,11 @@ from flask import request, redirect, Flask, flash, render_template, send_from_di
 from werkzeug.utils import secure_filename
 import os,datetime
 from customer import Customer 
-from bill import Bill 
 from item import Item 
 from payment import Payment
 from transaction import Transaction
 trans = Transaction()
 payment = Payment()
-bill = Bill()
 item = Item()
 app = Flask(__name__)
 customer = Customer()
@@ -109,23 +107,6 @@ def add_transaction(id):
             cart += [(itemid,request.form[d], request.form['discount'+str(itemid)])]
     trans.add(id,data['unit_price'],cart,data['tax'],data['misc'],data['grand_total'])
     return redirect('/customers/')
-
-@app.route('/bill/', methods=['POST'])
-def add_bill():
-    customer_id = request.form.get('customer_id')
-    item_id = request.form.get('item_id')
-    unit_price = request.form.get('unit_price')
-    weight = request.form.get('item_weight')
-    discount = request.form.get('discount')
-    total_price = request.form.get('total_price')
-    bill.add(customer_id,item_id,weight,unit_price,discount,total_price)
-    return redirect('/bills/'+str(customer_id))
-
-@app.route('/bills/')
-@app.route('/bills/<k>/<v>/')
-def bills(k='id',v='desc'):
-    result = bill.bills(k,v)
-    return render_template("bill.html", bills = result)  
 
 @app.route('/items/')
 @app.route('/items/<k>/<v>/')
