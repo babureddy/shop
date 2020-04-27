@@ -16,10 +16,7 @@
         Phone No:<strong>{{customer[0][2]}}</strong><br><br>
         {% for trans in transactions['transactions'] %}
         <h2>Transaction {{trans['id']}}</h2>
-        Unit Price Per Gram :<strong>{{trans['unit_price']}}</strong><br>
-        Tax % :<Strong>{{trans['tax']}}</Strong> <br>
-        Misc Charges:<Strong> {{trans['misc']}}</Strong><br>
-        Date :<Strong> {{trans['created_date']}}</Strong><br>
+        Unit Price Per Gram :<strong>{{trans['unit_price']}}</strong>   Tax % :<Strong>{{trans['tax']}}</Strong>    Misc Charges:<Strong> {{trans['misc']}}</Strong>    Final Price:<Strong> {{trans['final_price']}}</Strong>  Date :<Strong> {{trans['created_date']}}</Strong><br>
         <table id="data_table" style="width:1000px" border="3">
             <th>Item ID</th>
             <th>Name</th>

@@ -1,4 +1,6 @@
-from flask import request, redirect, Flask, render_template #pip install flask
+from flask import request, redirect, Flask, flash, render_template, send_from_directory, url_for, jsonify #pip install flask
+from werkzeug.utils import secure_filename
+import os
 from customer import Customer 
 from bill import Bill 
 from item import Item 
@@ -10,9 +12,18 @@ bill = Bill()
 item = Item()
 app = Flask(__name__)
 customer = Customer()
+UPLOAD_FOLDER = 'C:\\Users\\babur\\Google Drive\\tutorial\\python\\shop\\uploads'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 @app.route('/')
 def home():
     return render_template("home.html")
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
 @app.route('/customer/', methods=['POST'])
 def add_customer():
     name = request.form.get('customer_name')
@@ -36,7 +47,6 @@ def update_customer(id):
     city = request.form.get('customer_city')
     aadhar_card = request.form.get('customer_aadhar')
     photo = request.form.get('customer_photo')
-    print(id,name,mob1,mob2,address,city,aadhar_card,photo)
     customer.update(id,name.title(), mob1, mob2, address, city, aadhar_card, photo)
     return redirect('/customers/')
 
@@ -119,6 +129,11 @@ def add_item():
     weight = request.form.get('item_weight')
     photo = request.form.get('item_photo')
     stock = request.form.get('item_stock')
+    file = request.files['file']
+    if file:
+        filename = file.filename
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        photo = '/uploads/'+filename
     id = item.add(name.title(), desc,weight,photo,stock)
     return redirect('/items/')
 @app.route('/items/<id>/')
@@ -132,6 +147,11 @@ def update_item(id):
     weight = request.form.get('item_weight')
     photo = request.form.get('item_photo')
     stock = request.form.get('item_stock')
+    file = request.files['file']
+    if file:
+        filename = file.filename
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        photo = '/uploads/'+filename
     item.update(id,name.title(), desc,weight,photo,stock)
     return redirect('/items/')
 @app.route('/payments/<customer_id>')

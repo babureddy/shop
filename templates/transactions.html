@@ -35,7 +35,7 @@
                 <td>{{c[1]}}</td>
                 <td>{{c[2]}}</td>
                 <td><input id="weight{{c[0]}}" name="weight{{c[0]}}" value="{{c[3]}}" disabled></td>
-                <td>{{c[4]}}</td>
+                <td><img src='{{c[4]}}'></td>
                 <td>{{c[6]}}</td>
                 <td><input id="qty{{c[0]}}" name="qty{{c[0]}}" type="number" value="0" onchange="calculatePrice()"></td>
                 <td><input id="price{{c[0]}}" name="price{{c[0]}}" value="0.00" disabled></td>
@@ -46,7 +46,7 @@
         </table><br><br>
         <Strong>Tax %</Strong><input id="tax" name="tax" value="20" > 
         <Strong>Misc Charges</Strong><input id="misc" name="misc" value="0.00" >
-        <Strong>Total</Strong><input id="grand_total" name="grand_total" value="0.00" disabled>
+        <Strong>Total</Strong><input type="number" id="grand_total" name="grand_total" value="0.00" readonly>
         <button type="button" onclick="calculateGrandTotal();return false;">Calculate Final Total</button>
         <button type = "button" onclick="reset();return false;">Reset</button>
         <input type="Submit" value="Save" >

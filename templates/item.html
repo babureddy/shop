@@ -12,13 +12,17 @@
             <h3>{{ message }}</h3>
         </div>
         <div>
-            <form id='item_edit' method="POST" action="/item/">
+            <form id='item_edit' method="POST" enctype="multipart/form-data"  action="/item/">
                 <input type="text" value="" name="item_name" placeholder="Name">
                 <input  type="text" value="" name="item_desc" placeholder="Description">
                 <input  type="text" value="" name="item_weight" placeholder="Weight(gms)">
-                <input  type="text" value="" name="item_photo" placeholder="Photo">
-                <input  type="submit" value="Add" id="item_save"  ><br>
+                <input  type="file" name="file">
+                <input  type="submit" value="Save" id="item_save"  >
             </form>        
+            <!-- <form method="post" enctype="multipart/form-data" action="/upload">
+                Photo<input  type="file" name="file">
+                <input type="submit">
+            </form> -->
         </div>
     <div>
         <table border="1">
@@ -33,7 +37,7 @@
                 <td>{{c[1]}}</td>
                 <td>{{c[2]}}</td>
                 <td>{{c[3]}}</td>
-                <td>{{c[4]}}</td>
+                <td><img src="{{c[4]}}" width="400" height="300"></td>
             </tr>
             {% endfor %}
         </table>
