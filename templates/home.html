@@ -9,22 +9,22 @@
     <!-- <h3><a href='/customers/'>Customers</a>          <a href='/items/'>Items</a></h3><br> -->
     <h2>Accounts Summary </h2>
 
-        <table border="1">
+        <table width="500" border="1">
             <tr>
-                <td>Customers</td>
+                <td>No. of Customers</td>
                 <td><a href='/customers/' >{{reports['customers_count']}}</a></td>
             </tr>
             <tr>
-                <td>Items</td>
+                <td>No. of Items</td>
                 <td><a href='/items/' >{{reports['items_count']}}</a></td>
             </tr>
             <tr>
-                <td>Transactions</td>
-                <td><a href='/transactions/' >{{reports['transactions_count']}}</a></td>
+                <td>No. of Transactions</td>
+                <td><a href='/alltransactions/' >{{reports['transactions_count']}}</a></td>
             </tr>
             <tr>
                 <td>Sales Total</td>
-                <td><a href='/sales/'>{{reports['total_sales']}}</a></td>
+                <td><a href='/alltransactions/'>Rs. {{reports['total_sales']}}</a></td>
             </tr>
             <tr>
                 <td>Daily Sales Summary</td>

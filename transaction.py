@@ -4,7 +4,7 @@ class Transaction:
 
     def __init__(self):
         self.connection = sqlite3.connect('accounts.db', check_same_thread=False)
-        self.dt = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+        self.dt = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def add(self, customer_id, unit_price, cart, tax, misc,final_price):
         sql = "insert into trans (customer_id, unit_price, tax, misc, final_price,create_date) values (?,?,?,?,?,?)"
@@ -24,6 +24,11 @@ class Transaction:
         response = self.connection.cursor().execute(sql,[ payment_method,amount,details,self.dt,id])
         self.connection.commit()
         return response.lastrowid
+    def get_transactions(self):
+        sql = "select * from trans order by id desc"
+        result = self.connection.cursor().execute(sql)
+        rows = result.fetchall()
+        return rows
     def get_transactions_for_customer(self,id):
         sql = "select * from trans where customer_id = ? order by id desc"
         result = self.connection.cursor().execute(sql,[id])

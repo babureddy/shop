@@ -4,7 +4,7 @@ class Payment:
 
     def __init__(self):
         self.connection = sqlite3.connect('accounts.db', check_same_thread=False)
-        self.dt = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+        self.dt = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def add(self, bill_id, amount, payment_type,payment_details):
         sql = "insert into payment (tx_id, amount, payment_type, payment_details, payment_date) \

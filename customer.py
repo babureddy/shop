@@ -4,7 +4,7 @@ class Customer:
 
     def __init__(self):
         self.connection = sqlite3.connect('accounts.db', check_same_thread=False)
-        self.dt = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+        self.dt = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def add(self, name, mob1, mob2, address, city, aadhar_card, photo):
         if photo is None:

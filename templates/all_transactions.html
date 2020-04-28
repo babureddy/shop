@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Transactions</title>
+</head>
+
+<body>
+    <h3><a href='/customers/'>Customers</a> <a href='/items/'>Items</a></h3>
+    <h2>Transactions</h2>
+    <table id="data_table" style="width:1000px" border="3">
+            <th>ID</th>
+            <th>Customer ID</th>
+            <th>Unit Price</th>
+            <th>Tax</th>
+            <th>Misc Charges</th>
+            <th>Final Price</th>
+            <th>Date</th>
+
+            {% for c in transactions %}
+            <tr>
+                <td>{{c[0]}}</td>
+                <td>{{c[1]}}</td>
+                <td>{{c[2]}}</td>
+                <td>{{c[3]}}</td>
+                <td>{{c[4]}}</td>
+                <td>{{c[6]}}</td>
+                <td>{{c[5]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+</body>
+
+</html>

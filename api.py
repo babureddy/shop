@@ -78,6 +78,10 @@ def customers(k='id',v='desc'):
     result = customer.customers(k,v)
     return render_template("customer.html", customers = result)  
 
+@app.route('/alltransactions/')
+def all_transactions():
+    transactions = trans.get_transactions()
+    return render_template("all_transactions.html",transactions=transactions)  
 @app.route('/transactions/<id>/')
 def transactions(id):
     c = customer.get(id)
