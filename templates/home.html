@@ -6,15 +6,36 @@
 </head>
 
 <body>
-    <h2>Accounts</h2>
-        <div>
-            <h3>{{ message }}</h3>
-        </div>
-    <div>
-        <h2><a href='/customers/'>Customers</a></h2>
-        <h2><a href='/items/'>Items</a></h2>
-    </div>
+    <!-- <h3><a href='/customers/'>Customers</a>          <a href='/items/'>Items</a></h3><br> -->
+    <h2>Accounts Summary </h2>
 
+        <table border="1">
+            <tr>
+                <td>Customers</td>
+                <td><a href='/customers/' >{{reports['customers_count']}}</a></td>
+            </tr>
+            <tr>
+                <td>Items</td>
+                <td><a href='/items/' >{{reports['items_count']}}</a></td>
+            </tr>
+            <tr>
+                <td>Transactions</td>
+                <td><a href='/transactions/' >{{reports['transactions_count']}}</a></td>
+            </tr>
+            <tr>
+                <td>Sales Total</td>
+                <td><a href='/sales/'>{{reports['total_sales']}}</a></td>
+            </tr>
+            <tr>
+                <td>Daily Sales Summary</td>
+            </tr>
+            {% for sale in reports['daily_sales'] %}
+            <tr>
+                <td>{{sale['date']}}</td>
+                <td>Rs. {{sale['amount']}}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
 </body>
 
 </html>

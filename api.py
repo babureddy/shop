@@ -6,7 +6,10 @@ from item import Item
 from payment import Payment
 from transaction import Transaction
 from goldprice import getTodaysGoldPrice
+from reports import Reports
+
 # from util import encrypt
+reports = Reports()
 trans = Transaction()
 payment = Payment()
 item = Item()
@@ -21,7 +24,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 @app.route('/')
 def home():
-    return render_template("home.html")
+    return render_template("home.html",reports=get_reports())
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
@@ -165,6 +168,25 @@ def update_payment(id):
 def get_payment(id):
     result = payment.get(id)
     return render_template("payment_edit.html", payment = result)  
+
+def get_reports():
+    customers_count = reports.customersCount()
+    items_count = reports.itemsCount()
+    transactions_count = reports.transactionsCount()
+    total_sales = reports.salesTotal()
+    sales = reports.sales()
+    x={}
+    for sale in sales:
+        if sale[1][:10] not in x.keys() :
+            x[sale[1][:10]] = 0
+        if sale[0] != None :
+            x[sale[1][:10]] +=  sale[0]  
+    rows=[]
+    for k in x.keys(): 
+        rows += [{'date':k,'amount':x[k]}]
+    return {'customers_count':customers_count,
+                'items_count':items_count,'transactions_count':transactions_count,
+                'total_sales':total_sales,   'daily_sales':rows}
 
 if __name__ == '__main__':
  app.debug = True
