@@ -10,11 +10,15 @@ trans = Transaction()
 payment = Payment()
 item = Item()
 app = Flask(__name__)
+users = {'babureddy1969@gmail.com': {'password': 'secret'}}
+app.secret_key = 'super secret string'
 customer = Customer()
 UPLOAD_FOLDER = os.curdir+'\\uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['SERVER_NAME'] = "localhost:5000"
+
 @app.route('/')
 def home():
     return render_template("home.html")
