@@ -17,6 +17,7 @@
                 <input  type="text" value="" name="item_desc" placeholder="Description">
                 <input  type="text" value="" name="item_weight" placeholder="Weight(gms)">
                 <input  type="number" value="10" name="item_stock" placeholder="Stock">
+                <input  type="text" value="/uploads/no_photo.png" name="item_photo" >
                 <input  type="file" name="file">
                 <input  type="submit" value="Save" id="item_save"  >
             </form>        
@@ -33,6 +34,7 @@
             <th>Weight</th>
             <th>Stock</th>
             <th>Photo</th>
+            <th>Date</th>
             {% for c in items %}
             <tr>
                 <td><a href='/items/{{c[0]}}/' >{{c[0]}}</a></td>
@@ -40,7 +42,8 @@
                 <td>{{c[2]}}</td>
                 <td>{{c[3]}}</td>
                 <td>{{c[6]}}</td>
-                <td><img src="{{c[4]}}" width="400" height="300"></td>
+                <td><img src="{{c[4]}}" width="100" height="75"></td>
+                <td>{{c[5]}}</td>
             </tr>
             {% endfor %}
         </table>

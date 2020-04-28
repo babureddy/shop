@@ -15,7 +15,13 @@
         <strong>{{customer[0][1]}}</strong>
 
         <form id="transaction_form" method="POST" action="/transaction/{{customer[0][0]}}/">
-        Unit Price Per Gram :<input type="text" id="unit_price" name="unit_price" value="{{todays_gold_price}}" ><br><br>
+        Unit Price Per Gram :<input type="text" id="unit_price" name="unit_price" value="{{todays_gold_price}}" >
+        <Strong>Tax %</Strong><input id="tax" name="tax" value="20" > 
+        <Strong>Misc Charges</Strong><input id="misc" name="misc" value="0.00" >
+        <Strong>Total</Strong><input type="number" id="grand_total" name="grand_total" value="0.00" readonly>
+        <!-- <button type="button" onclick="calculateGrandTotal()">Calculate Final Total</button> -->
+        <button type = "button" onclick="reset()">Reset</button>
+        <input type="Submit" onclick="calculateGrandTotal();" value="Save" ><br><br>
         <div>
 
         <table id="data_table" style="width:1000px" border="3">
@@ -37,19 +43,13 @@
                 <td><input id="weight{{c[0]}}" name="weight{{c[0]}}" value="{{c[3]}}" disabled></td>
                 <td><img src='{{c[4]}}'></td>
                 <td>{{c[6]}}</td>
-                <td><input id="qty{{c[0]}}" name="qty{{c[0]}}" type="number" value="0" onchange="calculatePrice()"></td>
+                <td><input id="qty{{c[0]}}" name="qty{{c[0]}}" type="number" min="0" max="{{c[6]}}" value="0" onchange="calculatePrice()" onkeydown="return false" ></td>
                 <td><input id="price{{c[0]}}" name="price{{c[0]}}" value="0.00" disabled></td>
-                <td><input id="discount{{c[0]}}" name="discount{{c[0]}}" type="number"  value="0.00"  onchange="calculateDiscountedPrice()"></td>
+                <td><input id="discount{{c[0]}}" name="discount{{c[0]}}" type="number"  value="0.00" min="0"  onchange="calculateDiscountedPrice()" onkeydown="return false" ></td>
                 <td><input id="total_price{{c[0]}}" name="total_price{{c[0]}}" value="0.00" ></td>
             </tr>
             {% endfor %}
         </table><br><br>
-        <Strong>Tax %</Strong><input id="tax" name="tax" value="20" > 
-        <Strong>Misc Charges</Strong><input id="misc" name="misc" value="0.00" >
-        <Strong>Total</Strong><input type="number" id="grand_total" name="grand_total" value="0.00" readonly>
-        <button type="button" onclick="calculateGrandTotal();return false;">Calculate Final Total</button>
-        <button type = "button" onclick="reset();return false;">Reset</button>
-        <input type="Submit" value="Save" >
     </form>
             <script>
                 function reset(){
@@ -75,12 +75,13 @@
                         if (inputs[i].name.startsWith('qty')){
                             itemid = inputs[i].name.substring(3)
                             document.getElementById('price'+itemid).value = 
-                                document.getElementById('weight'+itemid).value
-                                * unit_price * document.getElementById('qty'+itemid).value
+                                Math.ceil(document.getElementById('weight'+itemid).value
+                                * unit_price * document.getElementById('qty'+itemid).value)
                             document.getElementById('total_price'+itemid).value = 
-                                document.getElementById('price'+itemid).value
+                                Math.ceil(document.getElementById('price'+itemid).value)
                         }
                     }
+                    calculateGrandTotal();
                     return false;
                 };
 
@@ -91,11 +92,12 @@
                         if (inputs[i].name.startsWith('qty')){
                             itemid = inputs[i].name.substring(3)
                             document.getElementById('total_price'+itemid).value = 
-                                document.getElementById('price'+itemid).value * 
-                                    (1-document.getElementById('discount'+itemid).value/100)
+                                Math.ceil(document.getElementById('price'+itemid).value * 
+                                    (1-document.getElementById('discount'+itemid).value/100))
 
                         }
                     }
+                    calculateGrandTotal();
                     return false;
                 };
                 function calculateGrandTotal(){
@@ -111,7 +113,7 @@
                     tax = document.getElementById('tax').value/100
                     grand_total += grand_total * tax
                     grand_total -= document.getElementById('misc').value
-                    document.getElementById('grand_total').value = grand_total
+                    document.getElementById('grand_total').value = Math.ceil(grand_total)
                     return false; 
                 };
         </script>

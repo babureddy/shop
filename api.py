@@ -6,6 +6,7 @@ from item import Item
 from payment import Payment
 from transaction import Transaction
 from goldprice import getTodaysGoldPrice
+# from util import encrypt
 trans = Transaction()
 payment = Payment()
 item = Item()
@@ -17,7 +18,6 @@ UPLOAD_FOLDER = os.curdir+'\\uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-app.config['SERVER_NAME'] = "localhost:5000"
 
 @app.route('/')
 def home():
@@ -168,4 +168,5 @@ def get_payment(id):
 
 if __name__ == '__main__':
  app.debug = True
+#  app.run(host='0.0.0.0:80')
  app.run()

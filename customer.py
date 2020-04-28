@@ -7,6 +7,8 @@ class Customer:
         self.dt = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
     def add(self, name, mob1, mob2, address, city, aadhar_card, photo):
+        if photo is None:
+            photo = '/uploads/no_photo.png'
         sql = "insert into customer (name,mob1,mob2,address,city,aadhar_card, photo,created_date) \
                 values (?,?,?,?,?,?,?,?)"
         response = self.connection.cursor().execute(sql,(name, mob1, mob2, address, city, aadhar_card, photo,self.dt))
