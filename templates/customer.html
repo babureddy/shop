@@ -24,11 +24,12 @@
                 <input  type="text" name="customer_aadhar" placeholder="Aadhar">
                 <input  type="text" name="customer_photo" placeholder="Photo" value="/uploads/no_photo.png">
                 <input  type="file" name="file">
-                <input  type="submit" value="Add" id="customer_save"  ><br><br>
+                <input  type="submit" value="Add" id="customer_save"  ><br><br><br>
             </form>
         </div>
-            <div>
-        <table border="1">
+        <input  type="text" id="search" placeholder="Type any string to search" onkeyup="search()"><br><br>
+        <div>
+        <table id = "data_table" border="1">
             <th>ID</th>
             <th>Name</th>
             <th>Mob1</th>
@@ -53,6 +54,29 @@
             </tr>
             {% endfor %}
         </table>
+        <script>
+            function search() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("search");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("data_table");
+                th = table.getElementsByTagName("th");
+                // alert(filter);
+                tr = table.getElementsByTagName("tr");
+                for (i = 1; i < tr.length; i++) {
+                    tr[i].style.display = "none";
+                    for(var j=0; j<th.length; j++){
+                        td = tr[i].getElementsByTagName("td")[j];      
+                        if (td) {
+                            if (td.innerHTML.toUpperCase().indexOf(filter.toUpperCase()) > -1)                               {
+                                tr[i].style.display = "";
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
     </div>
     </div>
 

@@ -25,8 +25,10 @@
                 <input type="submit">
             </form> -->
         </div>
+        <input  type="text" id="search" placeholder="Type any string to search" onkeyup="search()"><br><br>
+
     <div>
-        <table border="1">
+        <table id="data_table" border="1">
             <th>ID</th>
             <th>Name</th>
             <th>Description</th>
@@ -46,6 +48,29 @@
             </tr>
             {% endfor %}
         </table>
+        <script>
+            function search() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("search");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("data_table");
+                th = table.getElementsByTagName("th");
+                // alert(filter);
+                tr = table.getElementsByTagName("tr");
+                for (i = 1; i < tr.length; i++) {
+                    tr[i].style.display = "none";
+                    for(var j=0; j<th.length; j++){
+                        td = tr[i].getElementsByTagName("td")[j];      
+                        if (td) {
+                            if (td.innerHTML.toUpperCase().indexOf(filter.toUpperCase()) > -1)                               {
+                                tr[i].style.display = "";
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
     </div>
 
 </body>
