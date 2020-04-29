@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h3><a href='/home/'>Home</a> <a href='/customers/'>Customers</a> <a href='/items/'>Items</a></h3>
+    <h3><a href='/'>Home</a> <a href='/customers/'>Customers</a> <a href='/items/'>Items</a></h3>
         <div>
             <h3>{{ message }}</h3>
         </div>
@@ -15,7 +15,11 @@
         Name: <strong>{{customer[0][1]}}</strong><br>
         Phone No:<strong>{{customer[0][2]}}</strong><br><br>
         {% for trans in transactions['transactions'] %}
-        <h2>Transaction {{trans['id']}}</h2>
+        {% if trans['status'] == 'ACTIVE' %}
+        <h2>Transaction {{trans['id']}} <a href="/cancel/{{trans['id']}}/">Cancel</a></h2>
+        {% else %}
+        <h2>Transaction {{trans['id']}} Cancelled</h2>
+        {% endif %}
         Unit Price Per Gram :<strong>{{trans['unit_price']}}</strong>   Tax % :<Strong>{{trans['tax']}}</Strong>    Misc Charges:<Strong> {{trans['misc']}}</Strong>    Final Price:<Strong> {{trans['final_price']}}</Strong>  Date :<Strong> {{trans['created_date']}}</Strong><br>
         <table id="data_table" style="width:1000px" border="3">
             <th>Item ID</th>
@@ -34,8 +38,11 @@
             </tr>
             {% endfor %}
         </table>
-        
+        {% if trans['status'] == 'ACTIVE' %}        
         <h2>Payments (<a href='/newpayment/{{trans['id']}}/{{customer[0][0]}}/'>+</a>)</h2>
+        {% else %}
+        <h2>Payments</h2>
+        {% endif %}
         <table id="data_table" style="width:1000px" border="3">
             <th>ID</th>
             <th>Payment Method</th>

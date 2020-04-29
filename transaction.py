@@ -18,6 +18,16 @@ class Transaction:
 
         self.connection.commit()
         return response.lastrowid
+    def cancel(self, id):
+        sql = "update trans set status=?, cancel_date=? where id =?"
+        self.connection.cursor().execute(sql,[ id,self.dt,id])
+        items = self.get_items_for_transaction(id)
+        for item in items:
+            print(item)
+            sql = "update item set stock = stock + ? where id=?"
+            self.connection.cursor().execute(sql,[item[3],item[0]])
+
+        self.connection.commit()
         
     def update(self, id,bill_id, payment_method, amount, details):
         sql = "update payment set payment_type=?, amount=?, payment_details=?, payment_date=? where id =?"
@@ -28,6 +38,11 @@ class Transaction:
         sql = "select * from trans order by id desc"
         result = self.connection.cursor().execute(sql)
         rows = result.fetchall()
+        return rows
+    def get_customer_for_transaction(self,tx_id):
+        sql = "select customer_id from trans where id = ? order by id desc"
+        result = self.connection.cursor().execute(sql,[tx_id])
+        rows = result.fetchall()[0][0]
         return rows
     def get_transactions_for_customer(self,id):
         sql = "select * from trans where customer_id = ? order by id desc"
@@ -46,7 +61,8 @@ class Transaction:
                 items += [{'id':i[0],'tx_id':i[1],'item_id':i[2],'qty':i[3],
                     'discount':i[4],'item_name':i[6],'item_desc':i[7],'weight':i[8] }]
             transactions += [{'id':row[0],'customer_id':row[1],'unit_price':row[2],
-                'tax':row[3],'misc':row[4],'created_date':row[5],'final_price':row[6],'items':items,'payments':payments}]
+                'tax':row[3],'misc':row[4],'created_date':row[5],'final_price':row[6],
+                'status':row[7],'items':items,'payments':payments}]
             
         return {'transactions':transactions}
 

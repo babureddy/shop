@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h3><a href='/home/'>Home</a> <a href='/customers/'>Customers</a> <a href='/items/'>Items</a></h3>
+    <h3><a href='/'>Home</a> <a href='/customers/'>Customers</a> <a href='/items/'>Items</a></h3>
     <h2>Transactions</h2>
     <table id="data_table" style="width:1000px" border="3">
             <th>ID</th>
@@ -28,6 +28,9 @@
                 <td>{{c[6]}}</td>
                 <td>{{c[5]}}</td>
                 <td>{{c[7]}}</td>
+                {% if c[7] == 'ACTIVE' %}
+            <td><button type="button" onclick="/cancel/{{c[0]}}">Cancel</button></td>
+                {% endif %}
             </tr>
             {% endfor %}
         </table>

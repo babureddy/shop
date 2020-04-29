@@ -82,6 +82,11 @@ def customers(k='id',v='desc'):
 def all_transactions():
     transactions = trans.get_transactions()
     return render_template("all_transactions.html",transactions=transactions)  
+@app.route('/cancel/<id>/')
+def cancel_transaction(id):
+    trans.cancel(id)
+    customer_id = trans.get_customer_for_transaction(id)
+    return redirect('/showtransactions/'+str(customer_id) + '/')
 @app.route('/transactions/<id>/')
 def transactions(id):
     c = customer.get(id)
@@ -98,7 +103,7 @@ def show_transactions(id):
 @app.route('/transaction/<id>/', methods=['POST'])
 def add_transaction(id):
     data = request.form
-    print(data)
+    # print(data)
     cart=[]
     for d in data:
         if 'qty' in d:
