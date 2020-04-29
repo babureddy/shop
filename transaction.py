@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3,math
 import datetime
 class Transaction:
 
@@ -7,8 +7,10 @@ class Transaction:
         self.dt = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def add(self, customer_id, unit_price, cart, tax, misc,final_price):
-        sql = "insert into trans (customer_id, unit_price, tax, misc, final_price,create_date) values (?,?,?,?,?,?)"
-        tx_id = self.connection.cursor().execute(sql,(customer_id, unit_price, tax, misc,final_price,self.dt))
+        sql = "insert into trans (customer_id, unit_price, tax, misc, final_price,create_date,balance) values (?,?,?,?,?,?,?)"
+        final_price = int(final_price)
+        tx_id = self.connection.cursor().execute(sql,
+            (customer_id, unit_price, tax, misc,final_price,self.dt, final_price))
         for item in cart:
             sql = "insert into transaction_items (tx_id, item_id, qty, discount) values (?,?,?,?)"
             response = self.connection.cursor().execute(sql,(tx_id.lastrowid,item[0], item[1],item[2]))
@@ -28,12 +30,22 @@ class Transaction:
             self.connection.cursor().execute(sql,[item[3],item[0]])
 
         self.connection.commit()
+    def update_balance(self, id):
+        sql = "update trans set balance=final_price - (select sum(amount) from payment where tx_id=?) where id =?"
+        response = self.connection.cursor().execute(sql,[id,id])
+        self.connection.commit()
+        return response.lastrowid
         
     def update(self, id,bill_id, payment_method, amount, details):
         sql = "update payment set payment_type=?, amount=?, payment_details=?, payment_date=? where id =?"
         response = self.connection.cursor().execute(sql,[ payment_method,amount,details,self.dt,id])
         self.connection.commit()
         return response.lastrowid
+    def get_transaction(self,id):
+        sql = "select * from trans where id =? order by id desc"
+        result = self.connection.cursor().execute(sql,[id])
+        rows = result.fetchall()
+        return rows
     def get_transactions(self):
         sql = "select * from trans order by id desc"
         result = self.connection.cursor().execute(sql)
@@ -54,15 +66,15 @@ class Transaction:
             payments=[]
             y = self.payments(row[0])
             for i in y:
-                payments += [{'id':i[0],'payment_method':i[1],'amount':i[2],
+                payments += [{'id':i[0],'amount':i[1],'payment_method':i[2],
                     'payment_details':i[3],'payment_date':i[4]}]
             x = self.get_items_for_transaction(row[0])
             for i in x:
                 items += [{'id':i[0],'tx_id':i[1],'item_id':i[2],'qty':i[3],
                     'discount':i[4],'item_name':i[6],'item_desc':i[7],'weight':i[8] }]
             transactions += [{'id':row[0],'customer_id':row[1],'unit_price':row[2],
-                'tax':row[3],'misc':row[4],'created_date':row[5],'final_price':row[6],
-                'status':row[7],'items':items,'payments':payments}]
+                'tax':row[3],'misc':row[4],'created_date':row[5],'final_price':math.ceil(row[6]),
+                'status':row[7],'balance':math.ceil(row[9]),'items':items,'payments':payments}]
             
         return {'transactions':transactions}
 

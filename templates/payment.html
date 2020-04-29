@@ -15,7 +15,7 @@
             <form id='payment_add' method="POST" action="/payment/{{tx_id}}/{{customer_id}}/">
                 <input type="number"  id="customer_id"  name="customer_id" value="{{customer_id}}" disabled> 
                 <input type="number"  id="tx_id"  name="tx_id" value="{{tx_id}}" disabled> 
-                <input  type="text" name="payment_method" id="payment_method" placeholder="Payment Method">
+                <input  type="text" name="payment_method" id="payment_method" value="Cash" placeholder="Payment Method">
                 <!-- <select id="payment_method">
                     <option value="Cash">Cash</option>
                     <option value="Cheque">Cheque</option>
@@ -24,7 +24,7 @@
                     <option value="Wallet">Wallet</option>
                 </select> -->
                 
-                <input  type="number" name="amount" id="amount" placeholder="Amount">
+                <input  type="number" name="amount" id="amount" value="{{amount}}" placeholder="Amount">
                 <input  type="text" name="payment_details" id="payment_details" placeholder="Payment Details">
                 <input  type="submit" value="Add" id="payment_save"  ><br><br>
             </form>

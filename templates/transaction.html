@@ -16,11 +16,13 @@
         Phone No:<strong>{{customer[0][2]}}</strong><br><br>
         {% for trans in transactions['transactions'] %}
         {% if trans['status'] == 'ACTIVE' %}
-        <h2>Transaction {{trans['id']}} <a href="/cancel/{{trans['id']}}/">Cancel</a></h2>
+        <h2>Transaction {{trans['id']}} Amount Rs. {{trans['final_price']}} Balance Rs. {{trans['balance']}} 
+            {% if trans['balance'] == trans['final_price'] %}<a href="/cancel/{{trans['id']}}/"> Cancel</a>{% endif %}</h2>
         {% else %}
         <h2>Transaction {{trans['id']}} Cancelled</h2>
         {% endif %}
-        Unit Price Per Gram :<strong>{{trans['unit_price']}}</strong>   Tax % :<Strong>{{trans['tax']}}</Strong>    Misc Charges:<Strong> {{trans['misc']}}</Strong>    Final Price:<Strong> {{trans['final_price']}}</Strong>  Date :<Strong> {{trans['created_date']}}</Strong><br>
+        Unit Price Per Gram :<strong>Rs. {{trans['unit_price']}}</strong>   Tax % :<Strong>{{trans['tax']}}</Strong>    Misc Charges:<Strong>Rs. {{trans['misc']}}</Strong>
+          Date :<Strong> {{trans['created_date']}}</Strong><br>
         <table id="data_table" style="width:1000px" border="3">
             <th>Item ID</th>
             <th>Name</th>
@@ -38,23 +40,25 @@
             </tr>
             {% endfor %}
         </table>
-        {% if trans['status'] == 'ACTIVE' %}        
-        <h2>Payments (<a href='/newpayment/{{trans['id']}}/{{customer[0][0]}}/'>+</a>)</h2>
+        {% if trans['status'] == 'ACTIVE' %}       
+        <h2>Payments {% if trans['balance'] > 0 %} (<a href='/newpayment/{{trans['id']}}/{{customer[0][0]}}/'>+</a>)
+        {% endif %}
+        </h2>
         {% else %}
         <h2>Payments</h2>
         {% endif %}
         <table id="data_table" style="width:1000px" border="3">
             <th>ID</th>
             <th>Payment Method</th>
-            <th>Amount</th>
+            <th>Amount (Rs)</th>
             <th>Details</th>
             <th>Date</th>
 
             {% for c in trans['payments'] %}
             <tr>
                 <td>{{c['id']}}</td>
-                <td>{{c['payment_method']}}</td>
                 <td>{{c['amount']}}</td>
+                <td>{{c['payment_method']}}</td>
                 <td>{{c['payment_details']}}</td>
                 <td>{{c['payment_date']}}</td>
             </tr>

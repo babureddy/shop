@@ -156,14 +156,16 @@ def get_payments(transaction_id):
     return render_template("payment.html", payments = result)  
 @app.route('/newpayment/<tx_id>/<customer_id>/')
 def new_payment(tx_id,customer_id):
-    return render_template("payment.html", tx_id = tx_id,customer_id=customer_id)  
+    tx = trans.get_transaction(tx_id)
+    return render_template("payment.html", tx_id = tx_id,customer_id=customer_id,amount=tx[0][9])  
 @app.route('/payment/<tx_id>/<customer_id>/', methods=['POST'])
 def add_payment(tx_id,customer_id):
     payment_method = request.form.get('payment_method')
     amount = request.form.get('amount')
     payment_details = request.form.get('payment_details')
-    print(tx_id, payment_method,amount,payment_details)
-    id = payment.add(tx_id, payment_method,amount,payment_details)
+    # print(tx_id, payment_method,amount,payment_details)
+    id = payment.add(tx_id, amount,payment_method,payment_details)
+    trans.update_balance(tx_id)
     return redirect('/showtransactions/'+str(customer_id))
 @app.route('/payment/<id>/', methods=['POST'])
 def update_payment(id):
