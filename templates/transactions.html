@@ -7,7 +7,7 @@
 
 <body>
 
-    <h2><a href='/customers/'>Customers</a> <a href='/items/'>Items</a></h2>
+    <h3><a href='/home/'>Home</a> <a href='/customers/'>Customers</a> <a href='/items/'>Items</a></h3>
     <h2>Items</h2>
         <div>
             <h3>{{ message }}</h3>
@@ -42,7 +42,7 @@
                 <td>{{c[1]}}</td>
                 <td>{{c[2]}}</td>
                 <td><input id="weight{{c[0]}}" name="weight{{c[0]}}" value="{{c[3]}}" disabled></td>
-                <td><img src='{{c[4]}}'></td>
+                <td><img src='{{c[4]}}' width="100" height="75"></td>
                 <td>{{c[6]}}</td>
                 <td><input id="qty{{c[0]}}" name="qty{{c[0]}}" type="number" min="0" max="{{c[6]}}" value="0" onchange="calculatePrice()" onkeydown="return false" ></td>
                 <td><input id="price{{c[0]}}" name="price{{c[0]}}" value="0.00" disabled></td>
