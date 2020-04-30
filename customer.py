@@ -6,12 +6,12 @@ class Customer:
         self.connection = sqlite3.connect('accounts.db', check_same_thread=False)
         self.dt = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    def add(self, name, mob1, mob2, address, city, aadhar_card, photo):
+    def add(self, name, mob1, mob2, address, city, aadhar_card, photo, email):
         if photo is None:
             photo = '/uploads/no_photo.png'
-        sql = "insert into customer (name,mob1,mob2,address,city,aadhar_card, photo,created_date) \
-                values (?,?,?,?,?,?,?,?)"
-        response = self.connection.cursor().execute(sql,(name, mob1, mob2, address, city, aadhar_card, photo,self.dt))
+        sql = "insert into customer (name,mob1,mob2,address,city,aadhar_card, photo,email,created_date) \
+                values (?,?,?,?,?,?,?,?,?)"
+        response = self.connection.cursor().execute(sql,(name, mob1, mob2, address, city, aadhar_card, photo,email,self.dt))
         self.connection.commit()
         return response.lastrowid
         
@@ -21,10 +21,10 @@ class Customer:
         rows = result.fetchall()
         return rows
 
-    def update(self,id, name, mob1, mob2, address, city, aadhar_card, photo):
-        sql = "update customer set name=?,mob1=?,mob2=?,address=?,city=?,aadhar_card=?,photo=? where id=?"
+    def update(self,id, name, mob1, mob2, address, city, aadhar_card, photo,email):
+        sql = "update customer set name=?,mob1=?,mob2=?,address=?,city=?,aadhar_card=?,photo=?,email=? where id=?"
         try:
-            result = self.connection.cursor().execute(sql,[name, mob1, mob2, address, city, aadhar_card, photo,id])
+            result = self.connection.cursor().execute(sql,[name, mob1, mob2, address, city, aadhar_card, photo,email,id])
             self.connection.commit()
             return result
         except Exception as e:
@@ -38,7 +38,7 @@ class Customer:
         return rows
 
     def getBillsForCustomer(self,customer_id):
-        sql = "select * from bill where customer_id=? order by id desc"
+        sql = "select * from trans where customer_id=? order by id desc"
         result = self.connection.cursor().execute(sql ,(customer_id,))
         rows = result.fetchall()
         return rows

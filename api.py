@@ -38,6 +38,7 @@ def add_customer():
     address = request.form.get('customer_address')
     city = request.form.get('customer_city')
     aadhar_card = request.form.get('customer_aadhar')
+    email = request.form.get('customer_email')
     photo = request.form.get('customer_photo')
     file = request.files['file']
     if file:
@@ -45,7 +46,7 @@ def add_customer():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         photo = '/uploads/'+filename
 
-    customer.add(name.title(), mob1, mob2, address, city, aadhar_card, photo)
+    customer.add(name.title(), mob1, mob2, address, city, aadhar_card, photo,email)
     return redirect('/customers/')
 
 @app.route('/customer/<id>/', methods=['POST'])
@@ -57,13 +58,14 @@ def update_customer(id):
     address = request.form.get('customer_address')
     city = request.form.get('customer_city')
     aadhar_card = request.form.get('customer_aadhar')
+    email = request.form.get('customer_email')
     photo = request.form.get('customer_photo')
     file = request.files['file']
     if file:
         filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S')+file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         photo = '/uploads/'+filename
-    customer.update(id,name.title(), mob1, mob2, address, city, aadhar_card, photo)
+    customer.update(id,name.title(), mob1, mob2, address, city, aadhar_card, photo,email)
     return redirect('/customers/')
 
 @app.route('/customers/<id>/')

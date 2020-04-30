@@ -21,13 +21,15 @@
         Address: <input  type="text" value="{{customers[0][4]}}" name="customer_address" ><BR>
         City: <input  type="text" value="{{customers[0][5]}}" name="customer_city" ><BR>
         Aadhar: <input  type="text" value="{{customers[0][6]}}" name="customer_aadhar" ><BR>
+        Email: <input  type="email" value="{{customers[0][9]}}" name="customer_email" ><BR>
         Photo: <input  type="text" value="{{customers[0][7]}}" name="customer_photo" ><br>
         <input  type="file" name="file">
         <input  type="submit" value="Save" id="customer_save"  >
+        <img src="{{customers[0][7]}}" width="100" height="75">
     </form>
 </div>
-<BR>
-    <h2>Bills</h2>
+<!-- <BR>
+    <h2>Transactions</h2>
 <div>
     <table border="1">
         <th>ID</th>
@@ -41,7 +43,7 @@
         {% if bills %}
         {% for c in bills %}
         <tr>
-            <td><a href='/bills/{{c[0]}}/'>{{c[0]}}</a></td>
+            <td><a href='/showtransactions/{{c[0]}}/'>{{c[0]}}</a></td>
             <td>{{c[1]}}</td>
             <td>{{c[2]}}</td>
             <td>{{c[3]}}</td>
@@ -52,7 +54,7 @@
         </tr>
         {% endfor %}
         {% endif %}
-    </table>
+    </table> -->
 
 </body>
 
