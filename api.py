@@ -108,6 +108,7 @@ def get_items(k='id',v='desc'):
     return render_template("item.html", items = result)  
 @app.route('/item/', methods=['POST'])
 def add_item():
+    id = request.form.get('item_id',0)
     name = request.form.get('item_name')
     desc = request.form.get('item_desc')
     weight = request.form.get('item_weight')
@@ -118,7 +119,10 @@ def add_item():
         filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S')+file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         photo = '/uploads/'+filename
-    id = item.add(name.title(), desc,weight,photo,stock)
+    if int(id)>0:
+        item.update(id,name.title(), desc,weight,photo,stock)
+    else:
+        id = item.add(name.title(), desc,weight,photo,stock)
     return redirect('/items/')
 @app.route('/items/<id>/')
 def get_item(id):
