@@ -16,9 +16,9 @@
         <strong>{{customer[0][1]}}</strong>
 
         <form id="transaction_form" method="POST" action="/transaction/{{customer[0][0]}}/">
-        Unit Price Per Gram :<input type="text" id="unit_price" name="unit_price" value="{{todays_gold_price}}" >
-        <Strong>Tax %</Strong><input id="tax" name="tax" value="20" > 
-        <Strong>Misc Charges</Strong><input id="misc" name="misc" value="0.00" >
+        Unit Price Per Gram :<input type="number" id="unit_price" name="unit_price" value="{{todays_gold_price}}" onkeyup="calculateGrandTotal()">
+        <Strong>Tax %</Strong><input id="tax" name="tax" type ="number" value="20" type="number" onkeyup="calculateGrandTotal()"> 
+        <Strong>Misc Charges</Strong><input id="misc" type="number" name="misc" value="0.00" onkeyup="calculateGrandTotal()">
         <Strong>Total</Strong><input type="number" id="grand_total" name="grand_total" value="0.00" readonly>
         <!-- <button type="button" onclick="calculateGrandTotal()">Calculate Final Total</button> -->
         <button type = "button" onclick="reset()">Reset</button>
@@ -44,9 +44,9 @@
                 <td><input id="weight{{c[0]}}" name="weight{{c[0]}}" value="{{c[3]}}" disabled></td>
                 <td><img src='{{c[4]}}' width="100" height="75"></td>
                 <td>{{c[6]}}</td>
-                <td><input id="qty{{c[0]}}" name="qty{{c[0]}}" type="number" min="0" max="{{c[6]}}" value="0" onchange="calculatePrice()" onkeydown="return false" ></td>
+                <td><input id="qty{{c[0]}}" name="qty{{c[0]}}" type="number" min="0" max="{{c[6]}}" value="0" onkeyup="calculatePrice()" onchange="calculatePrice()" ></td>
                 <td><input id="price{{c[0]}}" name="price{{c[0]}}" value="0.00" disabled></td>
-                <td><input id="discount{{c[0]}}" name="discount{{c[0]}}" type="number"  value="0.00" min="0"  onchange="calculateDiscountedPrice()" onkeydown="return false" ></td>
+                <td><input id="discount{{c[0]}}" name="discount{{c[0]}}" type="number"  value="0.00" min="0"  onkeyup="calculateDiscountedPrice()" onchange="calculateDiscountedPrice()" ></td>
                 <td><input id="total_price{{c[0]}}" name="total_price{{c[0]}}" value="0.00" ></td>
             </tr>
             {% endfor %}

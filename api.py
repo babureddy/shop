@@ -21,6 +21,7 @@ UPLOAD_FOLDER = os.curdir+'\\uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['SERVERNAME'] = "reddy:5000"
 
 @app.route('/')
 def home():
@@ -204,5 +205,5 @@ def get_reports():
 
 if __name__ == '__main__':
  app.debug = True
-#  app.run(host='0.0.0.0:80')
- app.run()
+ app.run(host='reddy')
+#  app.run()

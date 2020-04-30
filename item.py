@@ -36,7 +36,7 @@ class Item:
         rows = result.fetchall()
         return rows
     def items(self,k='name',v='asc'):
-        sql = "select * from item where stock>0 order by " + k + ' ' + v 
+        sql = "select * from item where weight !='' and weight is not null and weight>0 and stock is not null and stock !='' and stock>0 order by " + k + ' ' + v 
         result = self.connection.cursor().execute(sql)
         rows = result.fetchall()
         return rows
