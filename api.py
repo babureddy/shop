@@ -33,6 +33,7 @@ def uploaded_file(filename):
                                filename)
 @app.route('/customer/', methods=['POST'])
 def add_customer():
+    customer_id = request.form.get('customer_id',0)
     name = request.form.get('customer_name')
     mob1 = request.form.get('customer_mob1')
     mob2 = request.form.get('customer_mob2')
@@ -46,27 +47,11 @@ def add_customer():
         filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S')+file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         photo = '/uploads/'+filename
-
-    customer.add(name.title(), mob1, mob2, address, city, aadhar_card, photo,email)
-    return redirect('/customers/')
-
-@app.route('/customer/<id>/', methods=['POST'])
-def update_customer(id):
-    name = request.form.get('customer_name')
-    id = request.form.get('customer_id')
-    mob1 = request.form.get('customer_mob1')
-    mob2 = request.form.get('customer_mob2')
-    address = request.form.get('customer_address')
-    city = request.form.get('customer_city')
-    aadhar_card = request.form.get('customer_aadhar')
-    email = request.form.get('customer_email')
-    photo = request.form.get('customer_photo')
-    file = request.files['file']
-    if file:
-        filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S')+file.filename
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        photo = '/uploads/'+filename
-    customer.update(id,name.title(), mob1, mob2, address, city, aadhar_card, photo,email)
+    print(customer_id, photo)
+    if int(customer_id)>0:
+        customer.update(customer_id,name.title(), mob1, mob2, address, city, aadhar_card, photo,email)
+    else:
+        customer.add(name.title(), mob1, mob2, address, city, aadhar_card, photo,email)
     return redirect('/customers/')
 
 @app.route('/customers/<id>/')

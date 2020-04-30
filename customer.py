@@ -22,14 +22,11 @@ class Customer:
         return rows
 
     def update(self,id, name, mob1, mob2, address, city, aadhar_card, photo,email):
+        print(id, name, mob1, mob2, address, city, aadhar_card, photo,email)
         sql = "update customer set name=?,mob1=?,mob2=?,address=?,city=?,aadhar_card=?,photo=?,email=? where id=?"
-        try:
-            result = self.connection.cursor().execute(sql,[name, mob1, mob2, address, city, aadhar_card, photo,email,id])
-            self.connection.commit()
-            return result
-        except Exception as e:
-            self.connection.rollback()
-            print(e)
+        result = self.connection.cursor().execute(sql,[name, mob1, mob2, address, city, aadhar_card, photo,email,id])
+        self.connection.commit()
+        return result
 
     def customers(self,k='id',v='desc'):
         sql = "select * from customer order by " + k + ' ' + v 

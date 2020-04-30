@@ -16,16 +16,17 @@
         </div>
         <div>
             <form id='customer_edit' method="POST"  enctype="multipart/form-data"  action="/customer/">
-                <input type="text"  name="customer_name" placeholder="Name" > 
-                <input  type="number" name="customer_mob1" placeholder="Mobile 1">
-                <input  type="number" name="customer_mob2" placeholder="Mobile 2">
-                <input  type="text" name="customer_address" placeholder="Address"><br>
-                <input  type="text" name="customer_city" placeholder="City">
-                <input  type="text" name="customer_aadhar" placeholder="Aadhar">
-                <input  type="email" name="customer_email" placeholder="Email">
-                <input  type="text" name="customer_photo" placeholder="Photo" value="/uploads/no_photo.png">
+                <input type="text"  name="customer_id" id="customer_id" value="0" readonly > 
+                <input type="text"  name="customer_name" id="customer_name" placeholder="Name" > 
+                <input  type="number" name="customer_mob1" id="customer_mob1" placeholder="Mobile 1">
+                <input  type="number" name="customer_mob2" id="customer_mob2" placeholder="Mobile 2">
+                <input  type="text" name="customer_address" id="customer_address" placeholder="Address"><br>
+                <input  type="text" name="customer_city" id="customer_city" placeholder="City">
+                <input  type="text" name="customer_aadhar" id="customer_aadhar" placeholder="Aadhar">
+                <input  type="email" name="customer_email" id="customer_email" placeholder="Email">
+                <input  type="text" name="customer_photo" id="customer_photo" placeholder="Photo" value="/uploads/no_photo.png">
                 <input  type="file" name="file">
-                <input  type="submit" value="Add" id="customer_save"  ><br><br><br>
+                <input  type="submit" value="Save" id="customer_save"  ><br><br><br>
             </form>
         </div>
         <input  type="text" id="search" placeholder="Type any string to search" onkeyup="search()"><br><br>
@@ -41,8 +42,8 @@
             <th>Email</th>
             <th>Photo</th>
             {% for c in customers %}
-            <tr>
-                <td><a href='/customers/{{c[0]}}/' >{{c[0]}}</a></td>
+            <tr id={{c[0]}}>
+                <td><button onclick="edit({{c[0]}})">{{c[0]}}</button></td>
                 <td>{{c[1]}}</td>
                 <td>{{c[2]}}</td>
                 <td>{{c[3]}}</td>
@@ -78,6 +79,24 @@
                         }
                     }
                 }
+            }
+            function edit(val){
+                // alert(val);
+                tr = document.getElementById(val);
+                // alert(tr)
+                th = document.getElementsByTagName('th');
+                td = tr.getElementsByTagName('td');
+                document.getElementById('customer_id').value=val
+                document.getElementById('customer_name').value=td[1].innerHTML
+                document.getElementById('customer_mob1').value=td[2].innerHTML
+                document.getElementById('customer_mob2').value=td[3].innerHTML
+                document.getElementById('customer_address').value=td[4].innerHTML
+                document.getElementById('customer_city').value=td[5].innerHTML
+                document.getElementById('customer_aadhar').value=td[6].innerHTML
+                document.getElementById('customer_email').value=td[7].innerHTML
+                x=td[8].getElementsByTagName('img')[0].src
+                document.getElementById('customer_photo').value=x.substring(x.indexOf('/uploads'))
+
             }
         </script>
     </div>
