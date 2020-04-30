@@ -185,6 +185,7 @@ def get_reports():
     items_count = reports.itemsCount()
     transactions_count = reports.transactionsCount()
     total_sales = reports.salesTotal()
+    total_balance = reports.balanceTotal()
     sales = reports.sales()
     x={}
     for sale in sales:
@@ -197,7 +198,7 @@ def get_reports():
         rows += [{'date':k,'amount':x[k]}]
     return {'customers_count':customers_count,
                 'items_count':items_count,'transactions_count':transactions_count,
-                'total_sales':total_sales,   'daily_sales':rows}
+                'total_sales':total_sales, 'total_balance':total_balance,  'daily_sales':rows}
 
 if __name__ == '__main__':
  app.debug = True

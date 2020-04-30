@@ -29,6 +29,11 @@ class Reports:
         result = self.connection.cursor().execute(sql)
         rows = result.fetchall()
         return rows[0][0]
+    def balanceTotal(self):
+        sql = "select sum(balance) from trans"
+        result = self.connection.cursor().execute(sql)
+        rows = result.fetchall()
+        return rows[0][0]
 
     def sales(self):
         sql = "select final_price, create_date from trans order by create_date desc"
