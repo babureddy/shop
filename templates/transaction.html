@@ -17,9 +17,9 @@
         {% for trans in transactions['transactions'] %}
         {% if trans['status'] == 'ACTIVE' %}
         <h2>Transaction {{trans['id']}} Amount Rs. {{trans['final_price']}} Balance Rs. {{trans['balance']}} 
-            {% if trans['balance'] == trans['final_price'] %}<a href="/cancel/{{trans['id']}}/"> Cancel</a>{% endif %}</h2>
+            {% if trans['balance'] == trans['final_price'] %}<a href="/cancel/{{trans['id']}}/"> Cancel</a>{% endif %}</h2><a href="/receipt/{{trans['id']}}/"> Receipt</a>
         {% else %}
-        <h2>Transaction {{trans['id']}} Cancelled</h2>
+        <h2>Transaction {{trans['id']}} Cancelled </h2><a href="/receipt/{{trans['id']}}/"> Receipt</a>
         {% endif %}
         Unit Price Per Gram :<strong>Rs. {{trans['unit_price']}}</strong>   Tax % :<Strong>{{trans['tax']}}</Strong>    Misc Charges:<Strong>Rs. {{trans['misc']}}</Strong>
           Date :<Strong> {{trans['created_date']}}</Strong><br>

@@ -16,37 +16,35 @@
         <strong>{{customer[0][1]}}</strong>
 
         <form id="transaction_form" method="POST" action="/transaction/{{customer[0][0]}}/">
-        Unit Price Per Gram :<input type="number" id="unit_price" name="unit_price" value="{{todays_gold_price}}" onkeyup="calculateGrandTotal()">
-        <Strong>Tax %</Strong><input id="tax" name="tax" type ="number" value="20" type="number" onkeyup="calculateGrandTotal()"> 
-        <Strong>Misc Charges</Strong><input id="misc" type="number" name="misc" value="0.00" onkeyup="calculateGrandTotal()">
-        <Strong>Total</Strong><input type="number" id="grand_total" name="grand_total" value="0.00" readonly>
-        <!-- <button type="button" onclick="calculateGrandTotal()">Calculate Final Total</button> -->
+        Unit Price Per Gram :<input type="number" id="unit_price" name="unit_price" value="{{todays_gold_price}}" onkeyup="calculateGrandTotal()" required>
+        <Strong>Tax %</Strong><input id="tax" name="tax" type ="number" value="20" type="number" onkeyup="calculateGrandTotal()" required> 
+        <Strong>Misc Charges</Strong><input id="misc" type="number" name="misc" value="0.00" onkeyup="calculateGrandTotal()" required>
+        <Strong>Total</Strong><input type="number" id="grand_total" name="grand_total" value="0.00" required>
+        <button type="button" onclick="calculateGrandTotal()">Calculate</button>
         <button type = "button" onclick="reset()">Reset</button>
-        <input type="Submit" onclick="calculateGrandTotal();" value="Save" ><br><br>
+        <input type="Submit" value="Save"><br><br>
         <div>
 
         <table id="data_table" style="width:1000px" border="3">
             <th>ID</th>
             <th>Name</th>
-            <th>Description</th>
+            <!-- <th>Description</th> -->
             <th>Weight (Gms)</th>
             <th>Photo</th>
             <th>Stock</th>
             <th>Qty</th>
-            <th>Price</th>
-            <th>Discount (%)</th>
-            <th>Price after discount</th>
+            <th>Wastage / Making Charges (%)</th>
+            <th>Price (Rs.)</th>
             {% for c in items %}
-            <tr>
+            <tr id={{c[0]}}>
                 <td>{{c[0]}}</td>
                 <td>{{c[1]}}</td>
-                <td>{{c[2]}}</td>
-                <td><input id="weight{{c[0]}}" name="weight{{c[0]}}" value="{{c[3]}}" disabled></td>
+                <!-- <td>{{c[2]}}</td> -->
+                <td id="weight{{c[0]}}">{{c[3]}}</td>
                 <td><img src='{{c[4]}}' width="100" height="75"></td>
                 <td>{{c[6]}}</td>
-                <td><input id="qty{{c[0]}}" name="qty{{c[0]}}" type="number" min="0" max="{{c[6]}}" value="0" onkeyup="calculatePrice()" onchange="calculatePrice()" ></td>
-                <td><input id="price{{c[0]}}" name="price{{c[0]}}" value="0.00" disabled></td>
-                <td><input id="discount{{c[0]}}" name="discount{{c[0]}}" type="number"  value="0.00" min="0"  onkeyup="calculateDiscountedPrice()" onchange="calculateDiscountedPrice()" ></td>
+                <td><input id="qty{{c[0]}}" name="qty{{c[0]}}" type="number" min="0" max="{{c[6]}}" value="0" onkeyup="calculateDiscountedPrice({{c[0]}})" onchange="calculateDiscountedPrice({{c[0]}})" ></td>
+                <td><input id="discount{{c[0]}}" name="discount{{c[0]}}" type="number"  value="18.00" min="0"  onkeyup="calculateDiscountedPrice({{c[0]}})" onchange="calculateDiscountedPrice({{c[0]}})" ></td>
                 <td><input id="total_price{{c[0]}}" name="total_price{{c[0]}}" value="0.00" ></td>
             </tr>
             {% endfor %}
@@ -58,7 +56,6 @@
                         if (inputs[i].name.startsWith('qty')){
                             itemid = inputs[i].name.substring(3)
                             document.getElementById('qty'+itemid).value = 0.00
-                            document.getElementById('price'+itemid).value = 0.00
                             document.getElementById('discount'+itemid).value = 0.00
                             document.getElementById('total_price'+itemid).value = 0.00
                         }
@@ -69,37 +66,19 @@
                     return false;
                 };
 
-                function calculatePrice(){
+                function calculateDiscountedPrice(val){
+                    weight=document.getElementById("weight"+val).innerHTML
+                    // alert(weight)
+                    wastage=1+document.getElementById("discount"+val).value/100
                     unit_price=document.getElementById('unit_price').value
-                    inputs=document.getElementsByTagName('input')
-                    for (i=0;i<inputs.length;i++){
-                        if (inputs[i].name.startsWith('qty')){
-                            itemid = inputs[i].name.substring(3)
-                            document.getElementById('price'+itemid).value = 
-                                Math.ceil(document.getElementById('weight'+itemid).value
-                                * unit_price * document.getElementById('qty'+itemid).value)
-                            document.getElementById('total_price'+itemid).value = 
-                                Math.ceil(document.getElementById('price'+itemid).value)
-                        }
-                    }
-                    calculateGrandTotal();
-                    return false;
-                };
+                    qty=document.getElementById('qty'+val).value
+                    // alert(unit_price + ' ' + qty + ' ' + weight + ' ' + wastage)
+                    document.getElementById('total_price'+val).value = 
+                            Math.ceil(unit_price *  weight * wastage * qty)
+                                   
 
-                function calculateDiscountedPrice(){
-                    inputs=document.getElementsByTagName('input')
-                    grand_total = 0
-                    for (i=0;i<inputs.length;i++){
-                        if (inputs[i].name.startsWith('qty')){
-                            itemid = inputs[i].name.substring(3)
-                            document.getElementById('total_price'+itemid).value = 
-                                Math.ceil(document.getElementById('price'+itemid).value * 
-                                    (1-document.getElementById('discount'+itemid).value/100))
-
-                        }
-                    }
                     calculateGrandTotal();
-                    return false;
+                    // return false;
                 };
                 function calculateGrandTotal(){
                     inputs=document.getElementsByTagName('input')
@@ -111,9 +90,10 @@
 
                         }
                     }
-                    tax = document.getElementById('tax').value/100
-                    grand_total += grand_total * tax
-                    grand_total -= document.getElementById('misc').value
+                    tax = 1+parseInt(document.getElementById('tax').value)/100
+                    grand_total = grand_total * tax
+                    grand_total = grand_total + parseInt(document.getElementById('misc').value)
+                    // alert(grand_total)
                     document.getElementById('grand_total').value = Math.ceil(grand_total)
                     return false; 
                 };
