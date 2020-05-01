@@ -7,7 +7,7 @@ from payment import Payment
 from transaction import Transaction
 from goldprice import getTodaysGoldPrice
 from reports import Reports
-
+import util
 # from util import encrypt
 reports = Reports()
 trans = Transaction()
@@ -192,6 +192,10 @@ def get_reports():
                 'items_count':items_count,'transactions_count':transactions_count,
                 'total_sales':total_sales, 'total_balance':total_balance,  'daily_sales':rows}
 
+@app.route('/r/<id>/')
+def receipt(id):
+    util.makemPdf()
+    return send_from_directory(directory='uploads', filename='qa.pdf')
 if __name__ == '__main__':
  app.debug = True
  app.run(host='reddy')

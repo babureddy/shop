@@ -74,7 +74,7 @@ class Transaction:
                     'discount':i[4],'item_name':i[6],'item_desc':i[7],'weight':i[8] }]
             transactions += [{'id':row[0],'customer_id':row[1],'unit_price':row[2],
                 'tax':row[3],'misc':row[4],'created_date':row[5],'final_price':math.ceil(row[6]),
-                'status':row[7],'balance':math.ceil(row[9]),'items':items,'payments':payments}]
+                'status':row[7],'balance':row[9],'items':items,'payments':payments}]
             
         return {'transactions':transactions}
 
