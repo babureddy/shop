@@ -38,10 +38,10 @@
                 <td>{{c['id']}}</td>
                 <td>{{c['item_name']}}</td>
                 <td>{{c['qty']}}</td>
-                <td>{{c['discount']}}</td>
+                <td>{{c['discount']}} {{c['discount_price_type']}}</td>
                 <td>{{c['weight']}}</td>
                 <td>{{c['unit_price']}}</td>
-                <td>{{c['other_price']}}</td>
+                <td>{{c['other_price']}} {{c['other_price_type']}}</td>
                 <td>{{c['total_price']}}</td>
             </tr> 
             {% endfor %}

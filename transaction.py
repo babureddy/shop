@@ -13,8 +13,11 @@ class Transaction:
         tx_id = self.connection.cursor().execute(sql,
             (customer_id, unit_price, tax, misc,final_price,self.dt, final_price))
         for item in cart:
-            sql = "insert into transaction_items (tx_id, item_id, qty, discount,unit_price, other_price,total_price) values (?,?,?,?,?,?,?)"
-            response = self.connection.cursor().execute(sql,(tx_id.lastrowid,item[0], item[1],item[2],item[3],item[4],item[5]))
+            sql = "insert into transaction_items (tx_id, item_id, qty, discount, \
+            unit_price, other_price,total_price,discount_price_type,other_price_type) \
+                values (?,?,?,?,?,?,?,?,?)"
+            response = self.connection.cursor().execute(sql,(tx_id.lastrowid,item[0], 
+                item[1],item[2],item[3],item[4],item[5],item[6],item[7]))
             
             sql = "update item set stock=stock-? where id = ?"
             response = self.connection.cursor().execute(sql,(item[1],item[0],))

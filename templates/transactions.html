@@ -25,28 +25,32 @@
         <input type="Submit" value="Save"><br><br>
         <div>
 
-        <table id="data_table" style="width:1000px" border="3">
+        <table id="data_table"  border="3">
             <th>ID</th>
             <th>Name</th>
             <th>Weight (Gms)</th>
             <th>Unit Price (Rs.) </th>
             <th>Stock</th>
             <th>Qty</th>
-            <th>Wastage / Making Charges (%)</th>
-            <th>Other Charges (Rs.)</th>
+            <th>Wastage / Making Charges</th>
+            <th>Other Charges</th>
             <th>Price (Rs.)</th>
             <th>Photo</th>
             {% for c in items %}
             <tr id="{{c['id']}}">
                 <td>{{c['id']}}</td>
                 <td>{{c['name']}}</td>
-                <td id="weight{{c['id']}}">{{c['weight']}}</td>
-                <td><input id="unit_price{{c['id']}}" name="unit_price{{c['id']}}" type="number" min="0" value="{{todays_gold_price}}" onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" ></td>
-                <td>{{c['stock']}}</td>
-                <td><input id="qty{{c['id']}}" name="qty{{c['id']}}" type="number" min="0" max="{{c['qty']}}" value="0" onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" ></td>
-                <td><input id="discount{{c['id']}}" name="discount{{c['id']}}" type="number"  value="18.00" min="0"  onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" ></td>
-                <td><input id="other_price{{c['id']}}" name="other_price{{c['id']}}" type="number"  value="0.00" min="0"  onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" ></td>
-                <td><input id="total_price{{c['id']}}" name="total_price{{c['id']}}" value="0.00" ></td>
+                <td style="text-align:center" id="weight{{c['id']}}">{{c['weight']}}</td>
+                <td  style="text-align:center"><input style="width:50px" id="unit_price{{c['id']}}" name="unit_price{{c['id']}}" type="number" min="0" value="{{todays_gold_price}}" onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" ></td>
+                <td  style="text-align:center">{{c['stock']}}</td>
+                <td  style="text-align:center"><input style="width:50px" id="qty{{c['id']}}" name="qty{{c['id']}}" type="number" min="0" max="{{c['qty']}}" value="0" onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" ></td>
+                <td style="text-align:center"><input style="width:100px" id="discount{{c['id']}}" name="discount{{c['id']}}" type="number"  value="18.00" min="0"  onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" >
+                    <select onchange="calculateDiscountedPrice({{c['id']}})" name="discount_price_type{{c['id']}}" id="discount_price_type{{c['id']}}"><option value="rupees" selected >Rs.</option><option value="percent">%</option></select></td>
+                </td>
+                <td style="text-align:center"><input style="width:50px" id="other_price{{c['id']}}" name="other_price{{c['id']}}" type="number"  value="0.00" min="0"  onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" >
+                        <select  onchange="calculateDiscountedPrice({{c['id']}})" name="other_price_type{{c['id']}}" id="other_price_type{{c['id']}}"><option value="rupees" selected >Rs.</option><option value="percent">%</option></select>
+                    </td>
+                <td><input style="width:100px" id="total_price{{c['id']}}" name="total_price{{c['id']}}" value="0.00" ></td>
                 <td><img src="{{c['photo']}}" width="100" height="75"></td>
             </tr>
             {% endfor %}
@@ -71,16 +75,33 @@
                 };
 
                 function calculateDiscountedPrice(val){
+                    wastage_price_type = document.getElementById("discount_price_type"+val).value
+                    other_price_type = document.getElementById("other_price_type"+val).value
                     weight=parseInt(document.getElementById("weight"+val).innerHTML)
-                    // alert(weight)
-                    wastage=1+(document.getElementById("discount"+val).value/100)
                     unit_price=parseInt(document.getElementById('unit_price'+val).value)
                     other_price=parseInt(document.getElementById('other_price'+val).value)
                     qty=parseInt(document.getElementById('qty'+val).value)
                     // alert(unit_price + ' ' + qty + ' ' + weight + ' ' + wastage)
-                    document.getElementById('total_price'+val).value = 
-                            Math.ceil(unit_price *  weight * wastage * qty) + other_price                                   
+                    if (wastage_price_type == 'percent'){
+                        wastage=1+(document.getElementById("discount"+val).value/100)
+                        // alert(wastage)
+                        document.getElementById('total_price'+val).value = 
+                            Math.ceil(unit_price *  weight * wastage * qty)                                    
+                    }else{                        
+                        wastage=parseInt(document.getElementById("discount"+val).value)
+                        // alert(wastage)
+                        document.getElementById('total_price'+val).value = 
+                            Math.ceil(unit_price *  weight  * qty) + wastage                                   
+                    }
 
+                    x=parseInt(document.getElementById('total_price'+val).value)
+                    if (other_price_type == 'percent'){
+                        other=(other_price/100) * x
+                        // alert(wastage)
+                        document.getElementById('total_price'+val).value = x + other
+                    }else{                        
+                        document.getElementById('total_price'+val).value = x + other_price
+                    }
                     calculateGrandTotal();
                     // return false;
                 };
