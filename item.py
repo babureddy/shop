@@ -37,6 +37,11 @@ class Item:
         return rows
     def items(self,k='name',v='asc'):
         sql = "select * from item where weight !='' and weight is not null and weight>0 and stock is not null and stock !='' and stock>0 order by " + k + ' ' + v 
-        result = self.connection.cursor().execute(sql)
+        cur=self.connection.cursor()
+        result = cur.execute(sql)
+        row_headers=[x[0] for x in cur.description]
         rows = result.fetchall()
-        return rows
+        json_data=[]
+        for result in rows:
+            json_data.append(dict(zip(row_headers,result)))
+        return json_data

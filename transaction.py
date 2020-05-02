@@ -1,4 +1,5 @@
 import sqlite3,math
+import json
 import datetime
 class Transaction:
 
@@ -12,8 +13,8 @@ class Transaction:
         tx_id = self.connection.cursor().execute(sql,
             (customer_id, unit_price, tax, misc,final_price,self.dt, final_price))
         for item in cart:
-            sql = "insert into transaction_items (tx_id, item_id, qty, discount) values (?,?,?,?)"
-            response = self.connection.cursor().execute(sql,(tx_id.lastrowid,item[0], item[1],item[2]))
+            sql = "insert into transaction_items (tx_id, item_id, qty, discount,unit_price, other_price,total_price) values (?,?,?,?,?,?,?)"
+            response = self.connection.cursor().execute(sql,(tx_id.lastrowid,item[0], item[1],item[2],item[3],item[4],item[5]))
             
             sql = "update item set stock=stock-? where id = ?"
             response = self.connection.cursor().execute(sql,(item[1],item[0],))
@@ -69,21 +70,27 @@ class Transaction:
                 payments += [{'id':i[0],'amount':i[1],'payment_method':i[2],
                     'payment_details':i[3],'payment_date':i[4]}]
             x = self.get_items_for_transaction(row[0])
-            for i in x:
-                items += [{'id':i[0],'tx_id':i[1],'item_id':i[2],'qty':i[3],
-                    'discount':i[4],'item_name':i[6],'item_desc':i[7],'weight':i[8] }]
+            print(x)
+            # for i in x:
+            #     items += [{'id':i[0],'tx_id':i[1],'item_id':i[2],'qty':i[3],
+            #         'discount':i[4],'item_name':i[6],'item_desc':i[7],'weight':i[8] }]
             transactions += [{'id':row[0],'customer_id':row[1],'unit_price':row[2],
                 'tax':row[3],'misc':row[4],'created_date':row[5],'final_price':math.ceil(row[6]),
-                'status':row[7],'balance':row[9],'items':items,'payments':payments}]
+                'status':row[7],'balance':row[9],'items':x,'payments':payments}]
             
         return {'transactions':transactions}
 
     def get_items_for_transaction(self,ids):
         sql = "select * from transaction_items a, item b where a.tx_id = ? \
              and a.item_id = b.id order by tx_id desc"
-        result = self.connection.cursor().execute(sql,[ids])
+        cur=self.connection.cursor()
+        result = cur.execute(sql,[ids])
+        row_headers=[x[0] for x in cur.description]
         rows = result.fetchall()
-        return rows
+        json_data=[]
+        for result in rows:
+            json_data.append(dict(zip(row_headers,result)))
+        return json_data
     def all_payments(self):
         sql = "select * from payment order by id desc" 
         result = self.connection.cursor().execute(sql)

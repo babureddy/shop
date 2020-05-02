@@ -79,6 +79,7 @@ def cancel_transaction(id):
 def transactions(id):
     c = customer.get(id)
     items = item.items()
+    print(items)
     todays_gold_price=getTodaysGoldPrice()
     # print(todays_gold_price)
     return render_template("transactions.html",customer=c,items=items, todays_gold_price=todays_gold_price)  
@@ -91,13 +92,14 @@ def show_transactions(id):
 @app.route('/transaction/<id>/', methods=['POST'])
 def add_transaction(id):
     data = request.form
-    # print(data)
     cart=[]
     for d in data:
         if 'qty' in d:
             itemid=d[3:]
             if int(request.form[d]) == 0: continue
-            cart += [(itemid,request.form[d], request.form['discount'+str(itemid)])]
+            cart += [(itemid,request.form[d], request.form['discount'+str(itemid)],
+                request.form['unit_price'+str(itemid)], request.form['other_price'+str(itemid)],
+                request.form['total_price'+str(itemid)])]
     trans.add(id,data['unit_price'],cart,data['tax'],data['misc'],data['grand_total'])
     return redirect('/customers/')
 

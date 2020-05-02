@@ -16,7 +16,7 @@
         <strong>{{customer[0][1]}}</strong>
 
         <form id="transaction_form" method="POST" action="/transaction/{{customer[0][0]}}/">
-        Unit Price Per Gram :<input type="number" id="unit_price" name="unit_price" value="{{todays_gold_price}}" onkeyup="calculateGrandTotal()" required>
+        Unit Price Per Gram :<input type="number" id="unit_price" name="unit_price" value="{{todays_gold_price}}" readonly>
         <Strong>Tax %</Strong><input id="tax" name="tax" type ="number" value="20" type="number" onkeyup="calculateGrandTotal()" required> 
         <Strong>Misc Charges</Strong><input id="misc" type="number" name="misc" value="0.00" onkeyup="calculateGrandTotal()" required>
         <Strong>Total</Strong><input type="number" id="grand_total" name="grand_total" value="0.00" required>
@@ -28,24 +28,26 @@
         <table id="data_table" style="width:1000px" border="3">
             <th>ID</th>
             <th>Name</th>
-            <!-- <th>Description</th> -->
             <th>Weight (Gms)</th>
-            <th>Photo</th>
+            <th>Unit Price (Rs.) </th>
             <th>Stock</th>
             <th>Qty</th>
             <th>Wastage / Making Charges (%)</th>
+            <th>Other Charges (Rs.)</th>
             <th>Price (Rs.)</th>
+            <th>Photo</th>
             {% for c in items %}
-            <tr id={{c[0]}}>
-                <td>{{c[0]}}</td>
-                <td>{{c[1]}}</td>
-                <!-- <td>{{c[2]}}</td> -->
-                <td id="weight{{c[0]}}">{{c[3]}}</td>
-                <td><img src='{{c[4]}}' width="100" height="75"></td>
-                <td>{{c[6]}}</td>
-                <td><input id="qty{{c[0]}}" name="qty{{c[0]}}" type="number" min="0" max="{{c[6]}}" value="0" onkeyup="calculateDiscountedPrice({{c[0]}})" onchange="calculateDiscountedPrice({{c[0]}})" ></td>
-                <td><input id="discount{{c[0]}}" name="discount{{c[0]}}" type="number"  value="18.00" min="0"  onkeyup="calculateDiscountedPrice({{c[0]}})" onchange="calculateDiscountedPrice({{c[0]}})" ></td>
-                <td><input id="total_price{{c[0]}}" name="total_price{{c[0]}}" value="0.00" ></td>
+            <tr id="{{c['id']}}">
+                <td>{{c['id']}}</td>
+                <td>{{c['name']}}</td>
+                <td id="weight{{c['id']}}">{{c['weight']}}</td>
+                <td><input id="unit_price{{c['id']}}" name="unit_price{{c['id']}}" type="number" min="0" value="{{todays_gold_price}}" onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" ></td>
+                <td>{{c['stock']}}</td>
+                <td><input id="qty{{c['id']}}" name="qty{{c['id']}}" type="number" min="0" max="{{c['qty']}}" value="0" onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" ></td>
+                <td><input id="discount{{c['id']}}" name="discount{{c['id']}}" type="number"  value="18.00" min="0"  onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" ></td>
+                <td><input id="other_price{{c['id']}}" name="other_price{{c['id']}}" type="number"  value="0.00" min="0"  onkeyup="calculateDiscountedPrice({{c['id']}})" onchange="calculateDiscountedPrice({{c['id']}})" ></td>
+                <td><input id="total_price{{c['id']}}" name="total_price{{c['id']}}" value="0.00" ></td>
+                <td><img src="{{c['photo']}}" width="100" height="75"></td>
             </tr>
             {% endfor %}
         </table><br><br>
@@ -58,6 +60,8 @@
                             document.getElementById('qty'+itemid).value = 0.00
                             document.getElementById('discount'+itemid).value = 0.00
                             document.getElementById('total_price'+itemid).value = 0.00
+                            document.getElementById('unit_price'+itemid).value = 0.00
+                            document.getElementById('other_price'+itemid).value = 0.00
                         }
                     }
                     document.getElementById('grand_total').value = 0.00
@@ -67,15 +71,15 @@
                 };
 
                 function calculateDiscountedPrice(val){
-                    weight=document.getElementById("weight"+val).innerHTML
+                    weight=parseInt(document.getElementById("weight"+val).innerHTML)
                     // alert(weight)
-                    wastage=1+document.getElementById("discount"+val).value/100
-                    unit_price=document.getElementById('unit_price').value
-                    qty=document.getElementById('qty'+val).value
+                    wastage=1+(document.getElementById("discount"+val).value/100)
+                    unit_price=parseInt(document.getElementById('unit_price'+val).value)
+                    other_price=parseInt(document.getElementById('other_price'+val).value)
+                    qty=parseInt(document.getElementById('qty'+val).value)
                     // alert(unit_price + ' ' + qty + ' ' + weight + ' ' + wastage)
                     document.getElementById('total_price'+val).value = 
-                            Math.ceil(unit_price *  weight * wastage * qty)
-                                   
+                            Math.ceil(unit_price *  weight * wastage * qty) + other_price                                   
 
                     calculateGrandTotal();
                     // return false;

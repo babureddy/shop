@@ -27,8 +27,11 @@
             <th>Item ID</th>
             <th>Name</th>
             <th>Qty</th>
-            <th>Discount (%)</th>
+            <th>Wastage / making charges</th>
             <th>Weight in gms</th>
+            <th>Unit Price</th>
+            <th>Other Price</th>
+            <th>Total Price</th>
 
             {% for c in trans['items'] %}
             <tr>
@@ -37,7 +40,10 @@
                 <td>{{c['qty']}}</td>
                 <td>{{c['discount']}}</td>
                 <td>{{c['weight']}}</td>
-            </tr>
+                <td>{{c['unit_price']}}</td>
+                <td>{{c['other_price']}}</td>
+                <td>{{c['total_price']}}</td>
+            </tr> 
             {% endfor %}
         </table>
         {% if trans['status'] == 'ACTIVE' %}       
